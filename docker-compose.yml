@@ -108,7 +108,7 @@ services:
 
   # ── Jupyter Lab (notebooks) ───────────────────────────────────────
   jupyter:
-    image: jupyter/pyspark-notebook:spark-3.5.1
+    image: jupyter/pyspark-notebook:latest
     container_name: bf-jupyter
     ports:
       - "8888:8888"
