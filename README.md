@@ -10,7 +10,7 @@
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        FUENTES DE DATOS                             │
-│  Core Bancario  │  CRM  │  App Móvil  │  Canales  │  Call Center   │
+│  Core Bancario  │  CRM  │  App Móvil  │  Canales  │  Call Center    │
 └────────────────────────────┬────────────────────────────────────────┘
                              │ CDC / Kafka Events
                              ▼
@@ -24,15 +24,15 @@
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    AZURE DATABRICKS + SPARK                         │
 │                                                                     │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────────┐   │
-│  │  Feature    │  │  BERT/NLP    │  │   MLflow Experiment     │   │
-│  │  Engineering│  │  Embeddings  │  │   Tracking              │   │
-│  └─────────────┘  └──────────────┘  └─────────────────────────┘   │
+│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────────┐     │
+│  │  Feature    │  │  BERT/NLP    │  │   MLflow Experiment     │     │
+│  │  Engineering│  │  Embeddings  │  │   Tracking              │     │
+│  └─────────────┘  └──────────────┘  └─────────────────────────┘     │
 │                                                                     │
-│  ┌──────────────────────────────────────────────────────────────┐  │
-│  │        Random Forest + XGBoost + Spark MLlib Ensemble        │  │
-│  │        Churn Score │ VIP Score │ SHAP Explainability         │  │
-│  └──────────────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────────────────┐   │
+│  │        Random Forest + XGBoost + Spark MLlib Ensemble        │   │
+│  │        Churn Score │ VIP Score │ SHAP Explainability         │   │
+│  └──────────────────────────────────────────────────────────────┘   │
 └────────────────────────────┬────────────────────────────────────────┘
                              │
               ┌──────────────┼──────────────┐
@@ -243,13 +243,13 @@ Power BI se conecta vía **DirectQuery** al Azure Data Lake:
 
 | Fase | Descripción | Estado |
 |------|-------------|--------|
-| **Fase 1** | Arquitectura base, datos sintéticos, pipeline PySpark | ✅ Completa |
-| **Fase 2** | Feature Engineering avanzado, modelo Random Forest | ✅ Completa |
-| **Fase 3** | XGBoost + SHAP explainability, MLflow tracking | 🔄 En progreso |
-| **Fase 4** | BERT embeddings integrados al pipeline churn | 🔄 En progreso |
-| **Fase 5** | FastAPI production-ready + autenticación JWT | ⏳ Planificada |
-| **Fase 6** | Dashboard Power BI completo + alertas CRM | ⏳ Planificada |
-| **Fase 7** | Deploy Databricks Jobs + CI/CD Azure DevOps | ⏳ Planificada |
+| **Fase 1** | Arquitectura base, datos sintéticos, pipeline PySpark | ✅ Completa    |
+| **Fase 2** | Feature Engineering avanzado, modelo Random Forest    | ✅ Completa    |
+| **Fase 3** | XGBoost + SHAP explainability, MLflow tracking        | 🔄 En progreso |
+| **Fase 4** | BERT embeddings integrados al pipeline churn          | 🔄 En progreso |
+| **Fase 5** | FastAPI production-ready + autenticación JWT          | ⏳ Planificada |
+| **Fase 6** | Dashboard Power BI completo + alertas CRM             | ⏳ Planificada |
+| **Fase 7** | Deploy Databricks Jobs + CI/CD Azure DevOps           | ⏳ Planificada |
 
 ---
 
