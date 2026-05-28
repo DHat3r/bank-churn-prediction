@@ -84,13 +84,10 @@ services:
   spark-master:
     image: apache/spark:3.5.1
     container_name: bf-spark-master
-    environment:
-      - SPARK_MODE=master
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master --host bf-spark-master
     ports:
-      - "8080:8080"      # Spark Web UI
-      - "7077:7077"      # Spark master port
+      - "7077:7077"
+      - "8080:8080"
     volumes:
       - ./data:/opt/spark/data
       - ./src:/opt/spark/src
@@ -100,9 +97,8 @@ services:
   spark-worker:
     image: apache/spark:3.5.1
     container_name: bf-spark-worker
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://bf-spark-master:7077
     environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_MEMORY=4G
       - SPARK_WORKER_CORES=4
     depends_on:
@@ -112,7 +108,7 @@ services:
 
   # ── Jupyter Lab (notebooks) ───────────────────────────────────────
   jupyter:
-    image: jupyter/pyspark-notebook:spark-3.5.0
+    image: jupyter/pyspark-notebook:spark-3.5.1
     container_name: bf-jupyter
     ports:
       - "8888:8888"
