@@ -1,122 +1,368 @@
-# CAIN FIELD GUIDE
+# 🏦 Banco Futura — Sistema de Predicción de Churn y Detección de Clientes VIP
 
-*The good hunter loves nothing.*
-
-## TAKING ACTION
-
-**Action rolls** are performed by rolling a dice pool of up to 3d6 for the relevant skill, plus up to 3d6 for **advantages**, plus up to 3d6 for **divine agony**. The admin will inform you if **difficulty** and/or **risk** are a factor before you roll. If a final dice pool has 0 or fewer dice, instead roll 2d6 and take the lower result.
-
-**Difficulty** can make a roll harder than normal. For a normal roll, die results of 4+ are successes. For a hard roll, only die results of 6 are successes. **Most tasks take only one success**, unless they are complex enough to have a talisman.
-
-**Talismans** are used to represent a complex task or ongoing event. Each success deals a **slash** on the task’s **talisman**. The task or event is complete when the talisman’s capacity (usually ~2-6 slashes) is filled.
-
-**Risk** can make a roll have negative consequences. After a risky action, the admin makes a **risk roll**. The admin **imposes a consequence** based on the result – the lower, the more dire. In some cases, a high roll may waive the negative consequence, or even grant a boon.
-
-**CAT**, or category, is the measure of a creature’s relative power. An exorcist’s mundane abilities are usually at CAT 0 but their supernatural ones are at their CAT score. At the admin’s discretion, a superior CAT may confer bonuses to the roll, or even automatic success if the difference is 3 categories or greater.
+> **Arquitectura enterprise de analítica avanzada sobre Big Data para banca moderna**
+>
+> **Stack:** PySpark · Azure Databricks · Delta Lake · BERT · FastAPI · Power BI
 
 ---
 
-## IMPROVING A ROLL
+# 📐 Arquitectura General
 
-**Advantages** are the most common way to improve rolls. **A limit of +3D (+3d6) of advantages may apply to a roll.** The sources of advantage are:
+```text
+┌─────────────────────────────────────────────────────────────────────┐
+│                        FUENTES DE DATOS                             │
+│  Core Bancario  │  CRM  │  App Móvil  │  Canales  │  Call Center    │
+└────────────────────────────┬────────────────────────────────────────┘
+                             │ CDC / Kafka Events
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                   AZURE DATA LAKE STORAGE Gen2                      │
+│                                                                     │
+│         RAW Zone  │  SILVER Zone  │  GOLD Zone                      │
+│         (Ingest)  │  (Cleansed)   │  (Features)                     │
+│                                                                     │
+└────────────────────────────┬────────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    AZURE DATABRICKS + SPARK                         │
+│                                                                     │
+│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────────┐     │
+│  │  Feature    │  │  BERT/NLP    │  │   MLflow Experiment     │     │
+│  │ Engineering │  │ Embeddings   │  │   Tracking              │     │
+│  └─────────────┘  └──────────────┘  └─────────────────────────┘     │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐   │
+│  │ Random Forest + XGBoost + Spark MLlib Ensemble              │   │
+│  │ Churn Score │ VIP Score │ SHAP Explainability               │   │
+│  └──────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└────────────────────────────┬────────────────────────────────────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              ▼              ▼              ▼
 
-* spending a **psyche burst** (max 1),
-* **setup** (max 1),
-* abilities (from agendas or blasphemies),
-* bargaining, and
-* helpful circumstance (at admin’s discretion).
-
-**Setup** is a special action roll, which can be hard or risky as any other. On a success, an exorcist chooses one character (including themselves) and an action roll they will perform, granting that roll:
-
-* +1D advantage, or
-* decreased difficulty or risk.
-
-An action roll may benefit **only once** from setup.
-
----
-
-**Teamwork** is a special action taken when performing a group task. Any number of exorcists take the teamwork action, choosing one ally to be the leader. Then, the leader makes an action roll with the highest of the team’s skills, advantages, kit and abilities. **Any consequences are applied to the whole team.**
-
-**Divine agony** is a special method to improve a roll, requiring **pathos**. An exorcist gains one pathos when they fail a roll, take an injury or affliction, fill a hook, or witness an ally die or suffer sin overflow. **Once per session**, they may spend divine agony to add a number of d6 equal to their pathos to the roll (max 3). This does not count against the +3D advantage limit. **Only one exorcist may use divine agony per scene.** All pathos is lost at the end of a session.
-
-**Bargaining** with the admin can be done by any player whenever they make a roll. They offer to take a **hook**, and if the admin accepts, their exorcist is granted:
-
-* +1D advantage, or
-* decreased difficulty or risk, or
-* a free psyche burst for that action, or
-* an additional talisman slash on the action.
-
----
-
-# THE EXORCIST
-
-**Exorcists are not human** for any purpose.
-
-**Execution talismans** represent the task of killing a creature. **Exorcist execution talismans (capacity: 6)** are filled like any other, but the slashes are called **stress**. Upon taking stress that would fill or exceed their talisman, an exorcist takes an **injury**, clears all stress, and takes any excess stress. **Each current injury reduces the maximum stress capacity of the execution talisman by 1.**
-
-If an exorcist has 3 injuries, they are **on the brink of death**. Their stress is cleared, and the next time they would take stress they instead suffer **instant death**. An exorcist who takes 7+ stress in a single move also suffers instant death. Instant death can be avoided by **defying their fate**. Doing so heals one injury and immediately forces the exorcist into **sin overflow**.
-
-**Psyche bursts** are an exorcist’s psychic reserves, and **sin** represents its overtaxing. An exorcist begins a hunt with **3 bursts** but may substitute for one by gaining **1d3 sin**, to a **sin cap** of 10. Reaching sin cap inflicts **sin overflow** at the end of the scene, whereupon they make a **resistance check** by rolling 1d6 + their number of sin marks. If they roll 6 or less and have 1 or more sin cap, they succeed – clear all sin, reduce sin cap by 2 and gain a **sin mark**. A 1 on the die also succeeds. On failure, they **turn into a Sin imago**.
-# Hooks
-
-**Hooks** are talismans (capacity: **3**) that represent an impending consequence. An exorcist slashes a hook on them whenever pressure increases, or the exorcist takes a risky action that rolls a 1 on the risk die, or the exorcist would gain that hook again. When the hook fills, its effect activates and the hook is removed.
-
-**Afflictions** are ongoing negative effects that last until the end of the hunt unless stated otherwise.
-
-**Rests** are taken as a party. When resting, **pressure increases by 1**, then each exorcist rolls 2d3. Each die can be spent separately to regain psyche bursts, heal stress, or clear hook slashes equal to the result.
-
-Exorcists begin hunts with **5 kit points** to pull out items. The most common items to pull out are their service weapons for 2 KP. Exorcists may pick up items, but cannot keep items between hunts.
-
-An exorcist has one **agenda item** from their agenda and any number of **bolded agenda items** from current and previous agendas. At the end of each session, an exorcist gains 1 xp per objective category:
-
-* Survived.
-* Followed their current agenda item.
-* Followed at least one bolded agenda item.
-* Gained an injury and/or affliction.
+       ┌──────────┐  ┌──────────────┐  ┌──────────┐
+       │ Power BI │  │   FastAPI    │  │   CRM    │
+       │Dashboard │  │ Real-time    │  │ Alertas  │
+       │          │  │ Scoring      │  │   VIP    │
+       └──────────┘  └──────────────┘  └──────────┘
+```
 
 ---
 
-# THE HUNT
+# 🏛️ Medallion Architecture (Delta Lake)
 
-The objective each hunt is to defeat the **Sin** before the **pressure talisman** (capacity: **6**) fills completely. Pressure is not increased directly, but instead slashed once each time the **tension talisman** (capacity: **3**) is filled. The tension talisman is slashed once whenever a non-combat scene passes, or the first time a 1 is rolled on a risk die in each non-combat scene.
-
-Each time pressure increases (i.e. is slashed), the Sin makes a dangerous **tension move** and the Sin’s execution talisman **gains 1 capacity**.
-
-The **host** is the human whose trauma birthed the Sin. Hosts may be aware or unaware of their Sins, may fuse with their Sins, or even be already dead. Though connected, the Sin and host are separate entities.
-
-The **palace** is the seat of a Sin’s power. A Sin fought outside of its palace retreats to it after it takes 4 slashes on its talisman. Inside, it heals 1d3 slashes each time pressure increases. **Only inside its palace can a Sin be defeated.** Exorcists inside the palace may employ the **Nail of Abel** ritual to force its Sin to return – this requires the physical presence of the Sin’s host, an object/person precious to the Sin’s host, or a part of the Sin’s host’s body (deceased or not).
+| Capa       | Descripción                                                                        | Formato        | Latencia            |
+| ---------- | ---------------------------------------------------------------------------------- | -------------- | ------------------- |
+| **RAW**    | Datos crudos sin modificar provenientes del core bancario, CRM y canales digitales | Parquet / JSON | Tiempo real o batch |
+| **SILVER** | Datos limpios, validados, deduplicados y tipados                                   | Delta          | Micro-batch (5 min) |
+| **GOLD**   | Features para Machine Learning, KPIs y métricas agregadas de negocio               | Delta          | Batch diario        |
 
 ---
 
-# Trauma Questions
+# 📁 Estructura del Repositorio
 
-**Trauma questions** are the fundamental questions related to the tragedy behind a Sin’s formation. At the beginning of a hunt, the **admin reveals 3 questions**. Exorcists may discover the **answers** to these questions and use them against the Sin during the final confrontation. When the admin reveals the result of a risk die but before they declare the reaction, the party may **counter** the Sin by expending an answer. One exorcist reduces the stress they take by 1d3, and the Sin takes an equal number of slashes (though this amount may not fill the final slash on its talisman).
-
-A Sin’s execution talisman has a capacity of **8 + CAT + pressure**. When it is filled, the exorcists may choose to **execute** or, if they answered all 3 trauma questions, **spare** the Sin. Execution earns 5 scrip, while sparing earns 3 scrip and a reprimand. Finally, exorcists clear half their sin, and remove all stress, injuries, and hooks.
+```text
+bank-churn-prediction/
+│
+├── data/
+│   ├── raw/                        # Zona RAW: datos crudos del Lakehouse
+│   ├── silver/                     # Zona SILVER: datos limpios y validados
+│   └── gold/                       # Zona GOLD: features ML + scores
+│
+├── notebooks/
+│   ├── 01_EDA_customers.ipynb      # Análisis exploratorio clientes
+│   ├── 02_feature_analysis.ipynb   # Análisis de features
+│   ├── 03_model_evaluation.ipynb   # Evaluación de modelos
+│   └── 04_bert_analysis.ipynb      # NLP y embeddings
+│
+├── src/
+│   ├── ingestion/
+│   │   ├── __init__.py
+│   │   ├── synthetic_data_generator.py
+│   │   └── kafka_consumer.py
+│   │
+│   ├── features/
+│   │   ├── __init__.py
+│   │   └── feature_engineering.py
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── churn_model.py
+│   │   └── vip_model.py
+│   │
+│   ├── embeddings/
+│   │   ├── __init__.py
+│   │   └── bert_embeddings.py
+│   │
+│   ├── pipelines/
+│   │   ├── __init__.py
+│   │   └── churn_pipeline.py
+│   │
+│   └── utils/
+│       ├── __init__.py
+│       └── spark_session.py
+│
+├── api/
+│   └── main.py
+│
+├── dashboards/
+│   └── banco_futura_powerbi.pbix
+│
+├── architecture/
+│   └── diagrams/
+│
+├── tests/
+│   ├── test_feature_engineering.py
+│   ├── test_churn_model.py
+│   └── test_api.py
+│
+├── config/
+│   └── settings.yaml
+│
+├── requirements.txt
+├── docker-compose.yml
+└── README.md
+```
 
 ---
 
-# CONFLICT SCENES
+# 🚀 Quickstart
 
-Each **round** of conflict consists of one action from each player, which they take in any order. **Action rolls during conflict are always risky by default**, except Defend and Teamwork, which don’t invoke risk rolls. **Action rolls using mundane methods to harm supernatural entities (such as Sins) are always hard.** Exorcists may take the following actions:
+## 1. Clonar y configurar entorno
 
-* **Act** or **Setup**.
-* **Defend (safe).** Choose an ally. The next time they take stress, roll 1d6.
+```bash
+git clone https://github.com/banco-futura/churn-vip-system.git
 
-  * On 1–3, take 1 stress and reduce the stress they take by 1.
-  * On 4–5, reduce the stress they take by 1.
-  * On 6, reduce the stress they take by 2.
-  * Multiple defends on one ally don’t stack.
-* **Teamwork (safe).**
-* **Analyze.** Deduce or create an advantageous state that’s more permanent than a setup.
-* **Flee.**
+cd bank-churn-prediction
 
-**The admin never acts during conflict.** Instead, each time a risky action is taken, the admin makes one **reaction**, usually by having an enemy make a move.
+python -m venv .venv
 
-**Enemy moves never miss** — they are only ever more or less severe. Possible reactions include:
+# Linux / macOS
+source .venv/bin/activate
 
-* **Attacks** or special abilities.
-* **Complications.** Create a disadvantageous situation, represented by a talisman. The complication lasts until the talisman is filled.
-* **Threats.** Powerful moves that call for an exorcist to improvise an immediate reaction of their own to try and mitigate.
+# Windows
+.venv\Scripts\activate
 
-*Until the stain has been wiped away.*
+pip install -r requirements.txt
+```
+
+---
+
+## 2. Generar datos sintéticos y ejecutar pipeline
+
+```python
+from src.pipelines.churn_pipeline import ChurnVIPPipeline
+
+pipeline = ChurnVIPPipeline(
+    env="local",
+    data_path="data",
+    model_type="random_forest",
+    run_embeddings=True,
+)
+
+df_results = pipeline.run(
+    n_customers=10_000
+)
+```
+
+---
+
+## 3. Levantar API de scoring
+
+```bash
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Swagger UI:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+## 4. Ejemplo de request a la API
+
+```bash
+curl -X POST "http://localhost:8000/predict/churn" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer_id": "CLI-0001234",
+    "age": 42,
+    "tenure_months": 36,
+    "region": "RM",
+    "segment": "Premium",
+    "avg_balance_6m": 5500000,
+    "monthly_transactions": 3,
+    "app_logins_30d": 1,
+    "n_products": 2,
+    "clv_score": 320000,
+    "n_complaints_3m": 2,
+    "nps_score": 4,
+    "days_since_last_contact": 75,
+    "last_complaint_text": "Quiero cerrar mi cuenta, el servicio es muy malo"
+  }'
+```
+
+---
+
+# 🤖 Modelos de Machine Learning
+
+## Churn Prediction
+
+| Modelo              | Framework              | AUC-ROC Esperado | Uso                     |
+| ------------------- | ---------------------- | ---------------- | ----------------------- |
+| Random Forest       | Spark MLlib            | 0.82 – 0.87      | Producción batch        |
+| XGBoost             | scikit-learn / xgboost | 0.85 – 0.90      | Explicabilidad con SHAP |
+| Logistic Regression | Spark MLlib            | 0.75 – 0.80      | Baseline interpretable  |
+
+---
+
+## Features más relevantes (SHAP)
+
+1. `avg_balance_6m` — Saldo promedio últimos 6 meses.
+2. `monthly_transactions` — Frecuencia transaccional.
+3. `n_complaints_3m` — Reclamos recientes.
+4. `nps_score` — Net Promoter Score.
+5. `digital_engagement_score` — Interacción digital compuesta.
+6. `churn_intent_score` — Score NLP derivado de BERT.
+7. `days_since_last_contact` — Recencia de contacto.
+8. `clv_score` — Customer Lifetime Value.
+
+---
+
+# 🧠 BERT Embeddings
+
+El módulo NLP transforma texto libre proveniente de reclamos, tickets y comentarios de clientes en señales cuantitativas utilizables por los modelos predictivos.
+
+```python
+from src.embeddings.bert_embeddings import BERTEmbeddingEngine
+
+engine = BERTEmbeddingEngine(
+    model_name="paraphrase-multilingual-MiniLM-L12-v2"
+)
+
+score = engine.compute_churn_intent_score([
+    "Quiero cerrar mi cuenta, estoy muy insatisfecho",
+    "Excelente servicio, muy contento con el banco"
+])
+
+# Resultado esperado:
+# [0.87, 0.03]
+```
+
+Interpretación:
+
+* **0.87** → Alta intención de abandono.
+* **0.03** → Alta probabilidad de retención.
+
+---
+
+# 📊 Power BI Integration
+
+El pipeline exporta resultados hacia la capa GOLD del Lakehouse en formato Delta Lake.
+
+Power BI consume la información mediante **DirectQuery** sobre Azure Data Lake Storage Gen2.
+
+## Tablas disponibles
+
+| Tabla                   | Descripción                                    |
+| ----------------------- | ---------------------------------------------- |
+| `gold/churn_vip_scores` | Score de churn y clasificación VIP por cliente |
+| `gold/risk_summary`     | Resumen de riesgo por segmento y región        |
+| `gold/vip_portfolio`    | Cartera de clientes VIP basada en CLV          |
+
+---
+
+# 📏 Roadmap del Proyecto
+
+| Fase       | Descripción                                            | Estado         |
+| ---------- | ------------------------------------------------------ | -------------- |
+| **Fase 1** | Arquitectura base, datos sintéticos y pipeline PySpark | ✅ Completa     |
+| **Fase 2** | Feature Engineering y modelo Random Forest             | ✅ Completa     |
+| **Fase 3** | XGBoost, SHAP y MLflow                                 | 🔄 En progreso |
+| **Fase 4** | Integración de embeddings BERT                         | 🔄 En progreso |
+| **Fase 5** | FastAPI productiva con autenticación JWT               | ⏳ Planificada  |
+| **Fase 6** | Dashboard Power BI y alertas CRM                       | ⏳ Planificada  |
+| **Fase 7** | CI/CD Azure DevOps y Databricks Jobs                   | ⏳ Planificada  |
+
+---
+
+# 🎯 Objetivos de Negocio
+
+### Reducción de Churn
+
+Identificar clientes con alta probabilidad de abandono antes de que cancelen sus productos financieros.
+
+### Segmentación VIP
+
+Detectar clientes estratégicos mediante CLV, comportamiento transaccional y engagement digital.
+
+### Retención Proactiva
+
+Generar alertas automáticas para campañas de retención personalizadas.
+
+### Explicabilidad
+
+Permitir que las áreas de negocio comprendan por qué un cliente fue clasificado como riesgo o VIP.
+
+---
+
+# 🔐 Consideraciones de Seguridad
+
+* Gestión de secretos mediante Azure Key Vault.
+* Encriptación de datos en reposo y en tránsito.
+* Control de acceso basado en roles (RBAC).
+* Auditoría de pipelines mediante MLflow y Databricks.
+* Anonimización de datos sensibles para ambientes de desarrollo.
+
+---
+
+# 🧪 Testing
+
+Ejecutar todos los tests:
+
+```bash
+pytest tests/
+```
+
+Ejecutar con cobertura:
+
+```bash
+pytest --cov=src tests/
+```
+
+---
+
+# 📋 Tecnologías
+
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![PySpark](https://img.shields.io/badge/PySpark-3.5-orange)
+![Databricks](https://img.shields.io/badge/Databricks-15.1-red)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.111-green)
+![XGBoost](https://img.shields.io/badge/XGBoost-2.0-yellow)
+![BERT](https://img.shields.io/badge/BERT-SentenceTransformers-purple)
+![MLflow](https://img.shields.io/badge/MLflow-2.13-blue)
+![Delta Lake](https://img.shields.io/badge/Delta_Lake-3.1-lightblue)
+
+---
+
+# 👨‍💻 Autor
+
+Proyecto demostrativo de arquitectura moderna de datos y Machine Learning para banca digital utilizando:
+
+* Azure Databricks
+* Apache Spark
+* Delta Lake
+* FastAPI
+* Power BI
+* MLflow
+* BERT / SentenceTransformers
+
+---
+
+# 📄 Licencia
+
+MIT License.
